@@ -1,0 +1,110 @@
+# full_backupusers.ldif
+# example User Database Migration
+# Generated from MongoDB to OpenLDAP
+
+# Base Organizational Unit
+dn: ou=users,dc=example,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: users
+description: example Users Organizational Unit
+
+# User: Ye Yint Oo (Admin)
+dn: uid=yeyintoo,ou=users,dc=example,dc=com
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: exampleUser
+uid: yeyintoo
+cn: Ye Yint Oo
+sn: Oo
+givenname: Ye Yint
+mail: yeyintoo@example.com
+userpassword: {SSHA}hashedpassword456
+uidnumber: 1001
+gidnumber: 1000
+homedirectory: /home/yeyintoo
+isAdmin: TRUE
+CreateAt: 20240101000000Z
+UpdateAt: 20240102000000Z
+profilePicture: https://example.com/profiles/yeyintoo.jpg
+description: System Administrator
+
+# User: Myat Shwe Soe
+dn: uid=myatshwesoe,ou=users,dc=example,dc=com
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: exampleUser
+uid: myatshwesoe
+cn: Myat Shwe Soe
+sn: Soe
+givenname: Myat Shwe
+mail: myatshwesoe@example.com
+userpassword: {SSHA}hashedpassword123
+uidnumber: 1000
+gidnumber: 1000
+homedirectory: /home/myatshwesoe
+isAdmin: FALSE
+CreateAt: 20240101000000Z
+UpdateAt: 20240103000000Z
+profilePicture: https://example.com/profiles/myatshwesoe.jpg
+description: Regular User
+
+# User: Saw Tint Kyaw
+dn: uid=sawtintkyaw,ou=users,dc=example,dc=com
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: exampleUser
+uid: sawtintkyaw
+cn: Saw Tint Kyaw
+sn: Kyaw
+givenname: Saw Tint
+mail: sawtintkyaw@example.com
+userpassword: {SSHA}hashedpassword789
+uidnumber: 1002
+gidnumber: 1000
+homedirectory: /home/sawtintkyaw
+isAdmin: FALSE
+CreateAt: 20240102000000Z
+UpdateAt: 20240104000000Z
+profilePicture: https://example.com/profiles/sawtintkyaw.jpg
+description: Regular User
+
+# User: Thet Zaw Min (Admin)
+dn: uid=thetzawmin,ou=users,dc=example,dc=com
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: exampleUser
+uid: thetzawmin
+cn: Thet Zaw Min
+sn: Min
+givenname: Thet Zaw
+mail: thetzawmin@example.com
+userpassword: {SSHA}hashedpasswordabc
+uidnumber: 1003
+gidnumber: 1000
+homedirectory: /home/thetzawmin
+isAdmin: TRUE
+CreateAt: 20240103000000Z
+UpdateAt: 20240105000000Z
+profilePicture: https://example.com/profiles/thetzawmin.jpg
+description: System Administrator
+
+# User: Ye Htet Zaw
+dn: uid=yehtetzaw,ou=users,dc=example,dc=com
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: exampleUser
+uid: yehtetzaw
+cn: Ye Htet Zaw
+sn: Zaw
+givenname: Ye Htet
+mail: yehtetzaw@example.com
+userpassword: {SSHA}hashedpassworddef
+uidnumber: 1004
+gidnumber: 1000
+homedirectory: /home/yehtetzaw
+isAdmin: FALSE
+CreateAt: 20240104000000Z
+UpdateAt: 20240106000000Z
+profilePicture: https://example.com/profiles/yehtetzaw.jpg
+description: Regular User
