@@ -1,5 +1,4 @@
 // models/ldap_user_model.js
-import ldapjs from 'ldapjs';
 
 export class LDAPUser {
   constructor(dn, attributes = {}) {
@@ -36,15 +35,30 @@ export class LDAPUser {
     return this.attributes?.UpdateAt?.[0] || this.attributes?.modifyTimestamp?.[0] || new Date(); 
   }
 
+  get firstName() { 
+    return this.attributes?.givenName?.[0] || ''; 
+  }
+
+  get lastName() { 
+    return this.attributes?.sn?.[0] || ''; 
+  }
+
+  get fullName() {
+    return this.attributes?.cn?.[0] || `${this.firstName} ${this.lastName}`;
+  }
+
   toJSON() {
     return {
       dn: this.dn,
       username: this.username,
       email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      fullName: this.fullName,
       profilePicture: this.profilePicture,
       isAdmin: this.isAdmin,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };
   }
-}
+  }

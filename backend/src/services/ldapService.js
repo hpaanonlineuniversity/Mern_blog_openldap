@@ -183,6 +183,107 @@ class LDAPService {
       console.log('🔌 Disconnected from LDAP server');
     }
   }
+  
+  async createUser(userData) {
+  try {
+    if (!this.isConnected) {
+      await this.connect();
+      await this.bind();
+    }
+
+    const {
+      username,
+      password,
+      email,
+      firstName,
+      lastName,
+      isAdmin = false
+    } = userData;
+
+    if (!username || !password || !email || !firstName || !lastName) {
+      throw new Error('All fields are required');
+    }
+
+    const existingUser = await this.findUserByUsername(username);
+    if (existingUser) {
+      throw new Error('Username already exists');
+    }
+
+    const userDN = `uid=${username},ou=users,dc=example,dc=com`;
+    const currentTime = new Date().toISOString();
+
+    // Minimal attributes for testing
+    const userAttributes = {
+      objectClass: ['inetOrgPerson', 'organizationalPerson', 'person', 'top'],
+      uid: username,
+      cn: `${firstName} ${lastName}`,
+      sn: lastName,
+      mail: email,
+      userPassword: password
+    };
+
+    console.log('Creating user with attributes:', userAttributes);
+
+    return new Promise((resolve, reject) => {
+      this.client.add(userDN, userAttributes, (err) => {
+        if (err) {
+          console.error('User creation error details:', {
+            message: err.message,
+            code: err.code,
+            lde_message: err.lde_message
+          });
+          reject(new Error('Failed to create user: ' + err.message));
+        } else {
+          console.log('User created successfully:', username);
+          
+          const responseAttributes = {
+            uid: username,
+            cn: `${firstName} ${lastName}`,
+            sn: lastName,
+            mail: email,
+            isAdmin: isAdmin.toString(),
+            CreateAt: currentTime,
+            UpdateAt: currentTime
+          };
+          
+          const newUser = new LDAPUser(userDN, responseAttributes);
+          resolve(newUser);
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Create user error:', error);
+    throw error;
+  }
+}
+
+  async ensureOUExists() {
+    try {
+      const ouAttributes = {
+        objectClass: ['organizationalUnit', 'top'],
+        ou: 'users'
+      };
+
+      return new Promise((resolve, reject) => {
+        this.client.add('ou=users,dc=example,dc=com', ouAttributes, (err) => {
+          if (err) {
+            if (err.code === 68) { // Already exists
+              console.log('✅ Users OU already exists');
+              resolve();
+            } else {
+              reject(err);
+            }
+          } else {
+            console.log('✅ Created users OU');
+            resolve();
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Ensure OU error:', error);
+      throw error;
+    }
+  }
 }
 
 export const ldapService = new LDAPService();

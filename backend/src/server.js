@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
     message: 'LDAP Authentication API',
     endpoints: {
       login: 'POST /api/auth/login',
+      register: 'POST /api/auth/register',
       users: 'GET /api/auth/users',
       createUser: 'POST /api/auth/users'
     }
